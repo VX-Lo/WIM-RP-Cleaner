@@ -2,47 +2,92 @@
 
 A Python script that converts WIM logs into clean, readable prose — ideal for archiving roleplay scenes.
 
-You should ask your roleplaying partner first before you archive things in a place where anyone else might possibly see them, even if it's unlikely. Don't assume consent.
+Please ask your RP partner before you archive, post, or share logs anywhere another person could possibly see them. Do not assume consent.
 
+> New to GitHub, Python, or command lines? Start with **`HOW_TO_USE.md`** for a beginner-friendly walkthrough.
+
+## Quick Start
+
+1. Install **Python 3**
+2. Copy your WIM log file from:
+   `WTF/Account/<account>/SavedVariables/WIM.lua`
+3. Put that copied file in the same folder as `clean-rp.py`
+4. Optionally rename it to `input.lua` for easiest use and/or trim it down to just what you want
+5. Run:
+
+```bash
+python clean-rp.py
+```
+
+If `python` does not work:
+
+- **Windows:** try `py clean-rp.py`
+- **Mac/Linux:** try `python3 clean-rp.py`
+
+In auto mode, the script writes the cleaned result to `output.txt`.
+
+## Finding Your WIM Log
+
+Your WIM saved data is usually stored here inside your World of Warcraft folder:
+
+```text
+WTF/Account/<account>/SavedVariables/WIM.lua
+```
+
+---
 
 ## Features
 
-- Reassembles fragmented messages within a configurable time window (default: same timestamp)
-- Separates paragraphs from the same speaker by blank lines
+- Reassembles fragmented messages within a configurable time window
+- Defaults to exact timestamp matching unless you set a latency value
+- Separates paragraphs from the same speaker with blank lines
 - Separates different speakers with `---` dividers
 - Strips WoW color codes (`|cffRRGGBB`, `|r`, etc.)
-- Skips out-of-character messages wrapped in parentheses
-- Handles escaped characters (e.g. `\"` in dialogue)
+- Skips out-of-character messages wrapped in parentheses or brackets
+- Handles escaped characters such as `\"`
 - Auto-detects the most recent `input*` file in the script directory
+- No external dependencies
 
 ## Usage
 
+If your system does not recognize `python`, use:
+
+- **Windows:** `py`
+- **Mac/Linux:** `python3`
+
+### Basic examples
+
 ```bash
-# Auto mode: reads most recent input* file, writes to output.txt
+# Auto mode: reads the most recent input* file and writes to output.txt
 python clean-rp.py
 
-# Specify input file
+# Specify an input file
 python clean-rp.py my_log.lua
 
 # Specify input and output
 python clean-rp.py my_log.lua -o scene.txt
 
 # Filter to a specific conversation
-python clean-rp.py RP.lua --convo Jaina
-
-# Pipe from stdin
-cat my_log.lua | python clean-rp.py
-
-# Merge messages sent within 2 seconds of each other (useful for high-latency connections)
-python clean-rp.py my_log.lua -l 2
+python clean-rp.py my_log.lua --convo Jaina
 ```
 
-Use `-l` or `--latency` to set the maximum gap in seconds the script will tolerate between consecutive fragments before treating them as separate paragraphs. Defaults to `0`, meaning only messages with identical timestamps are merged.
+### Latency / message chaining
 
+```bash
+# Merge fragments sent within 2 seconds of each other
+python clean-rp.py my_log.lua -l 2
+
+# Same thing with the long option
+python clean-rp.py my_log.lua --latency 2
+```
+
+Use `-l` or `--latency` to set the maximum gap, in seconds, allowed between consecutive fragments before treating them as separate paragraphs.
+
+The default is `0`, which means only messages with the **exact same timestamp** are merged.
 
 ## Input Format
 
-The script expects Lua table entries as saved by WIM:
+The script expects Lua table entries in the style WIM saves:
 
 ```lua
 {
@@ -55,10 +100,9 @@ The script expects Lua table entries as saved by WIM:
 },
 ```
 
-
 ## Output Format
 
-```
+```text
 This is one paragraph from a speaker.
 
 This is a second paragraph from the same speaker, sent a few seconds later.
@@ -70,4 +114,9 @@ And now the other speaker's turn.
 
 ## Requirements
 
-Python 3.6+. No external dependencies.
+- Python 3.6+
+- No external dependencies
+
+## Need Help?
+
+If you want a slower, step-by-step guide for **Windows, Mac, or Linux**, read **`HOW_TO_USE.md`**.
