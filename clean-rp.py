@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 """
-Clean up WoW whisper RP logs into readable prose.
+Clean up WIM RP logs into readable prose.
 
-Designed for addons that persist whisper history as Lua tables, namely
-WIM but also maybe Elephant? The saved format interleaves messages from
-both participants chronologically, and long pastes get fragmented by
-WoW's 255-character whisper limit — so a single RP paragraph often
-arrives as 3-5 rapid-fire messages sharing the same timestamp.
+The saved format interleaves messages from both participants
+chronologically, and long pastes get fragmented by WoW's
+255-character whisper limit — so a single RP paragraph often
+arrives as 3-5 rapid-fire messages sharing roughly the same timestamp.
 
 This script reassembles those fragments, groups speaker turns, strips
 WoW markup, drops OOC chatter within parentheses, and outputs clean prose
-suitable for archiving or (consensual) posting. 
+suitable for archiving or (consensual) posting.
 
 Usage:
     python clean_rp_log.py                           # auto-detect input*, write to output.txt
