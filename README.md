@@ -1,4 +1,4 @@
-# WoW RP Log Cleaner
+# WIM RP Log Cleaner
 
 A Python script that converts WIM logs into clean, readable prose — ideal for archiving roleplay scenes.
 
